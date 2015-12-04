@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>sfc-example</artifactId>
+        <groupId>com.inductiveautomation.examples.sfc</groupId>
+        <version>1.8.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sfc-build</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.inductiveautomation.examples.sfc.common</groupId>
+            <artifactId>sfc-common</artifactId>
+            <version>1.8.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.inductiveautomation.examples.sfc.client</groupId>
+            <artifactId>sfc-client</artifactId>
+            <version>1.8.0-SNAPSHOT</version>
+
+        </dependency>
+        <dependency>
+            <groupId>com.inductiveautomation.examples.sfc.designer</groupId>
+            <artifactId>sfc-designer</artifactId>
+            <version>1.8.0-SNAPSHOT</version>
+
+        </dependency>
+        <dependency>
+            <groupId>com.inductiveautomation.ignition.examples.sfc</groupId>
+            <artifactId>sfc-gateway</artifactId>
+            <version>1.8.0-SNAPSHOT</version>
+
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+
+                <groupId>com.inductiveautomation.ignitionsdk</groupId>
+                <artifactId>ignition-maven-plugin</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+
+                <executions>
+                    <execution>
+                        <id>package-modl</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>modl</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-module</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>modl</goal>
+                            <goal>post</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <projectScopes>
+                        <projectScope>
+                            <name>sfc-gateway</name>
+                            <scope>G</scope>
+                        </projectScope>
+                        <projectScope>
+                            <name>sfc-client</name>
+                            <scope>G</scope>
+                        </projectScope>
+                        <projectScope>
+                            <name>sfc-designer</name>
+                            <scope>CD</scope>
+                        </projectScope>
+                    </projectScopes>
+
+                    <moduleId>com.inductiveautomation.ignition.examples.sfc</moduleId>
+                    <moduleName>SFC Example</moduleName>
+                    <moduleDescription>A simple example demonstrating how to use the sfc module api.</moduleDescription>
+                    <moduleVersion>${project.version}</moduleVersion>
+                    <requiredIgnitionVersion>7.8.0</requiredIgnitionVersion>
+                    <requiredFrameworkVersion>7</requiredFrameworkVersion>
+                    <freeModule>false</freeModule>
+
+                    <depends>
+                        <depend>
+                            <scope>G</scope>
+                            <moduleId>sfc-gateway-api</moduleId>
+                        </depend>
+                    </depends>
+
+                    <hooks>
+                        <hook>
+                            <scope>G</scope>
+                            <hookClass>com.inductiveautomation.examples.sfc.gateway.SfcGatewayHookImpl</hookClass>
+                        </hook>
+                        <hook>
+                            <scope>C</scope>
+                            <hookClass>com.inductiveautomation.examples.sfc.client.SFCClientHook</hookClass>
+                        </hook>
+                        <hook>
+                            <scope>G</scope>
+                            <hookClass>com.inductiveautomation.examples.sfc.designer.SFCDesignerHook</hookClass>
+                        </hook>
+                    </hooks>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
